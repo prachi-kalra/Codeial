@@ -1,8 +1,10 @@
-module.exports.home=function(req,res){
- console.log(req.cookies);
- res.cookie('user_id','25');
+const Post=require('../models/post');
+module.exports.name=function(req,res){
+ Post.find({}).populate('user').exec(function(err,posts){
   return res.render('home',{
-    title:"home"
+    title:"Codeial|Home",
+    posts:posts
   });
+ });
+
 }
-// earlier i was doing res.send..but now i want my controller to render an html/ejs file
