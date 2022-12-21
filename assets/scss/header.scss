@@ -1,0 +1,27 @@
+nav{
+    height:50px;
+    width:1100px;
+    margin-left:50px;
+    background-color: blueviolet;
+    display:flex;
+}
+
+nav{
+    ul{
+        list-style: none;
+        margin-top: -30px;
+    }
+    li{
+        font-size: 30px;
+        display: inline-block;
+        color: white;
+    }
+    a {
+        font-size:20px;
+        color:white;
+      }
+    .toright{
+        margin-left:700px;
+    }
+    
+}
