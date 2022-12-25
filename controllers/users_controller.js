@@ -2,27 +2,22 @@ const { localsName } = require("ejs");
 const User = require("../models/user");
 
 module.exports.profile=function(req,res){
-    console.log(req.user);
-    //session cookie ka data encrypted hai we can't read it ..isiliye wo nahi chala !
-    // if(req.cookies.user_id){
-    //     User.findById(req.cookies.users_id,function(err,user){
-            
-    //         if(user){
-    //             return res.render('user_profile',{
-    //                 title:"User Profile",
-    //                 user:user
-    //             });
-    //         }
-    //         return res.redirect('/users/sign-in');
-    //     });
+     User.findById(req.params.id,function(err,user){
+        return res.render('user_profile',{
+            title:"User Profile",
+            profile_user:user            
+        });
+     });
 
-    // }else{
-    //     return res.redirect('/users/sign-in');
-    // }
-    return res.render('user_profile',{
-                        title:"User Profile",
-                        
-                    });
+}
+module.exports.update=function(req,res){
+    if(req.user.id==req.params.id){
+        User.findByIdAndUpdate(req.params.id,req.body,function(err,user){
+            return res.redirect('back');
+        });
+     }else{
+        return res.status(401).send('Unauthorized');
+     }
 }
 // we need  a route to access our controller !
 // we will create a new file in routes users.js!
