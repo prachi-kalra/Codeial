@@ -65,7 +65,7 @@ User.findOne({email:req.body.email},function(err,user){
 }
 //sign in and create a session for the user !
 module.exports.createSession=function(req,res){
-
+       req.flash('success','Logged in Successfully!');
 // User.findOne({email:req.body.email},function(err,user){
 //     if(err){
 //         console.log('error in finding the user signing in');
@@ -85,6 +85,8 @@ return res.redirect('/');
 module.exports.destroySession=function(req,res,next){
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.redirect('/');
+        req.flash('success','Logged out Successfully!');
+        return res.redirect('/');
       });
+      
 }
