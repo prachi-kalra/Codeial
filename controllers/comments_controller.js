@@ -1,5 +1,7 @@
 const Comment=require('../models/comment');
 const Post=require('../models/post');
+const Like=require('../models/like');
+const commentsMailer=require('../mailers/comments_mailer');
 module.exports.create=async function(req,res){
     try{
         let post=await Post.findById(req.body.post);
@@ -11,6 +13,17 @@ module.exports.create=async function(req,res){
             });
                 post.comments.push(comment);
                 post.save();
+                comment=await comment.populate('user','name email').populate();
+                
+                if(req.xhr){
+                    return res.status(200).json({
+                        data:{
+                            comment:comment
+                        },
+                        message:"Post created !"
+                    });
+                }
+                req.flash('success','Comment published!');
                 res.redirect('/');
             
         }
@@ -27,14 +40,32 @@ module.exports.destroy=async function(req,res){
            // hai and we gotta delete that array as well !
            comment.remove();
            let post=await Post.findByIdAndUpdate(postId,{$pull:{comments:req.params.id}});
-                    return res.redirect('back');
-       
-        }else{
-           return res.redirect('back');
+           await Like.deleteMany({likeable:comment._id,onModel:'Comment'});
+           
+           if (req.xhr){
+            return res.status(200).json({
+                data: {
+                    comment_id: req.params.id
+                },
+                message: "Post deleted"
+            });
         }
-    }catch(err){
-        console.log("ERROR",err);
-        return;
+
+
+        req.flash('success', 'Comment deleted!');
+
+        return res.redirect('back');
+
+       
+    }else{
+        req.flash('error', 'Unauthorized');
+        return res.redirect('back');
     }
+
    
+}catch(err){
+    req.flash('error', err);
+    return;
+}
+
 }
