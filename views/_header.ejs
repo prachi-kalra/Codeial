@@ -1,0 +1,22 @@
+<link rel="stylesheet"href="/css/header.css">
+<header>
+    <nav>
+    <ul>
+        <%if(locals.user){%>
+           <li> <h5>CODEIAL&nbsp; !</h5></li>
+            <li class="toright">
+                <a href="/users/profile/<%=user.id%>"><%=user.name%></a>
+                &nbsp;&nbsp;
+                 <a href="/users/sign-out">Sign Out</a>
+            </li>
+            <%}else{%>
+                <li><h4>CODEIAL &nbsp;!</h4></li>
+                <li class="toright">
+                    <a href="/users/sign-in">Sign In</a>
+                     &nbsp;&nbsp;
+                 <a href="/users/sign-up">Sign Up</a>
+                </li>
+                <%}%>
+    </ul>
+    </nav>
+</header>
